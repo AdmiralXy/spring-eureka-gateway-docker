@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: countryModule
+          uri: lb://COUNTRY-SERVICE
+          predicates:
+            - Path=/countries-management/**
+        - id: covidModule
+          uri: lb://COVID-SERVICE
+          predicates:
+            - Path=/covid-management/**
+        - id: aggregatorModule
+          uri: lb://AGGREGATOR-SERVICE
+          predicates:
+            - Path=/information-management/**
+server:
+  port: ${GATEWAY_PORT:80}
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+  instance:
+    preferIpAddress: true

@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  eureka-server:
+    image: admiralxy/eureka-server:latest
+    environment:
+      EUREKA_PORT: 8761
+    ports:
+      - "8761:8761"
+  api-gateway:
+    image: admiralxy/api-gateway:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/api-gateway:/app/config
+    depends_on:
+      - eureka-server
+    environment:
+      GATEWAY_PORT: 80
+      EUREKA_URI: http://eureka-server:8761/eureka
+      CONFIG_LOCATION: file:./config/config.yaml
